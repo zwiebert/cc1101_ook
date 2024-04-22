@@ -188,6 +188,7 @@ $(docs_html):$(DOXY_BUILD_PATH)/api/input_files
 	make doxy-api-build
 docs:$(docs_html)
 	-rm -rf docs
-	cp -r $(docs_html) docs
+	-mkdir -p docs
+	cp -r $(docs_html) docs/api
 	git add docs
 

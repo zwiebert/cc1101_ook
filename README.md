@@ -5,7 +5,7 @@
   It relies on esp-idf SPI functions, so its usable on ESP32 microcontroller only.
 
 #### Documentation
-   *  View [API documentation](https://zwiebert.github.io/cc1101_ook) 
+   *  View [API documentation](https://zwiebert.github.io/cc1101_ook/api) 
    *  Create and view API documentation `make doxy-api-view`
    *  Create and view source documentation `make doxy-dev-view`
 
