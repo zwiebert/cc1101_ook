@@ -182,13 +182,17 @@ $(DOXY_BUILD_PATH)/dev/input_files: $(DOXY_BUILD_PATH)/dev FORCE
 	git ls-files 'components/**.h' 'components/**.c' 'components/**.hh' 'components/**.cc' 'components/**.cpp' '*.md'  > $@
 
 ########### github pages ###############
-docs_html=$(DOXY_BUILD_PATH)/api/html
+api_html=$(DOXY_BUILD_PATH)/api/html
 
-$(docs_html):$(DOXY_BUILD_PATH)/api/input_files
+$(api_html):$(DOXY_BUILD_PATH)/api/input_files
 	make doxy-api-build
-docs:$(docs_html)
-	-rm -rf docs
+docs/api:$(api_html)
+	-rm -rf docs/api
 	-mkdir -p docs
-	cp -r $(docs_html) docs/api
-	git add docs
+	cp -r $</ $@/
+	git add $@
+
+.PHONY: pages
+
+pages: docs/api
 
