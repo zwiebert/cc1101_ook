@@ -190,9 +190,15 @@ docs/api:$(api_html)
 	-rm -rf docs/api
 	-mkdir -p docs
 	cp -r $</ $@/
-	git add $@
 
 .PHONY: pages
 
-pages: docs/api
+pages:
+	-git branch -D pages
+	git checkout -b pages
+	make docs/api
+	git add docs/api && git commit -m "Update doc pages"
+	git push --set-upstream --force origin pages
+	git checkout develop
+
 
