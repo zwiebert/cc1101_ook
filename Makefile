@@ -191,14 +191,16 @@ docs/api:$(api_html)
 	-mkdir -p docs
 	cp -r $</ $@/
 
-.PHONY: pages
+.PHONY: gh_pages
 
-pages:
-	-git branch -D pages
-	git checkout -b pages
+git_current_branch=$(shell git branch --show-current)
+
+gh_pages:
+	-git branch -D $@
+	git checkout -b $@
 	make docs/api
 	git add docs/api && git commit -m "Update doc pages"
-	git push --set-upstream --force origin pages
-	git checkout develop
+	git push --set-upstream --force origin $@
+	git checkout $(git_current_branch)
 
 
