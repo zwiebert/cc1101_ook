@@ -278,7 +278,8 @@ static bool cc1101_write_regs(const uint8_t *src) {
   LockGuard lock(cc_mutex);
 
   for (int i = 0; src[i] != 0xff; i += 2) {
-    Write_CC_Config(src[i], src[i + 1]);
+    if (-1 == Write_CC_Config(src[i], src[i + 1]))
+      return false;
   }
   return true;
 }
@@ -374,8 +375,13 @@ static bool cc1101_init() {
 
   rx_mode = tx_mode = false;
   ms_delay(100);
-  cc1101_write_regs(cc1101_config);
-  return setup_CC_Idle();
+  if (!cc1101_write_regs(cc1101_config))
+    return false;
+  if (!setup_CC_Idle())
+    return false;
+
+  ESP_LOGI(TAG, "init succeeded");
+  return true;
 }
 
 static void disable_cc1101() {
@@ -502,12 +508,15 @@ bool cc1101_ook_spi_setup(const struct cc1101_settings *cfg) {
   if (!enable_cc1101(cfg)) {
     ESP_LOGE(TAG, "enabling SPI failed");
     return false;
-  }
+  } else
+    ESP_LOGI(TAG, "SPI enabled");
 
   if (!cc1101_init()) {
     ESP_LOGE(TAG, "init failed");
     return false;
   }
+
+
 
   if (!cc1101_ook_setDirection(false)) {
     ESP_LOGE(TAG, "enter RX state failed");
