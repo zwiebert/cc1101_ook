@@ -5,7 +5,7 @@ idf_component_register(
     INCLUDE_DIRS "./include" 
   #  REQUIRES utils_misc utils_debug
     PRIV_REQUIRES utils_misc freertos 
-                  driver #PRIV_ESP_IDF
+                  esp_driver_spi esp_driver_gpio #PRIV_ESP_IDF
      )
 
 component_compile_options(${comp_compile_opts})
